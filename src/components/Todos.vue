@@ -4,7 +4,8 @@ import { mdiCheckCircleOutline } from "@mdi/js";
 import { mdiCheckCircle } from "@mdi/js";
 import { mdiDelete } from "@mdi/js";
 import { mdiPencil } from "@mdi/js";
-defineProps(["text", "completed", "key"]);
+
+const props = defineProps(["text", "completed", "id"]);
 </script>
 
 <template>
@@ -12,6 +13,10 @@ defineProps(["text", "completed", "key"]);
     <svg-icon type="mdi" :path="mdiCheckCircleOutline"></svg-icon>
     <p>{{ text }}</p>
     <svg-icon type="mdi" :path="mdiPencil"></svg-icon>
-    <svg-icon type="mdi" :path="mdiDelete"></svg-icon>
+    <svg-icon
+      type="mdi"
+      :path="mdiDelete"
+      @click="$emit('deleteTodo', id)"
+    ></svg-icon>
   </div>
 </template>

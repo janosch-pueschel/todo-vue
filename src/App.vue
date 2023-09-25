@@ -7,6 +7,7 @@ import Todos from "./components/Todos.vue";
 
 const todos = ref([]);
 const userInput = ref("");
+
 function addTodo() {
   if (userInput.value === "") {
     alert("Please enter your todo-item!");
@@ -19,6 +20,21 @@ function addTodo() {
     todos.value.unshift(newTodoItem);
     userInput.value = "";
   }
+}
+
+function deleteTodo(id) {
+  console.log(todos.value);
+  const updatedTodos = [];
+  for (let i = 0; i < todos.value.length; i++) {
+    const todo = todos.value[i];
+    if (todo.id === id) {
+      continue;
+    } else {
+      updatedTodos.push(todo);
+    }
+  }
+  todos.value = updatedTodos;
+  console.log(todos.value);
 }
 </script>
 
@@ -42,10 +58,11 @@ function addTodo() {
     <div class="w-4/6 mt-10">
       <Todos
         v-for="todo in todos"
+        :key="todo.id"
         :text="todo.text"
         :completed="todo.completed"
-        :key="todo.id"
-        :number="todo.id"
+        :id="todo.id"
+        @delete-todo="deleteTodo"
       />
     </div>
   </div>
