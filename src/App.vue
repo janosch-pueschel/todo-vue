@@ -6,8 +6,17 @@ import { mdiPlus } from "@mdi/js";
 import Todos from "./components/Todos.vue";
 import Header from "./components/Header.vue";
 
-const todos = ref([]);
+const init = localStorage.getItem("todos");
+const todos = ref(init ? JSON.parse(init) : []);
 const userInput = ref("");
+
+watch(
+  todos,
+  (todos) => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  },
+  { deep: true }
+);
 
 function addTodo() {
   if (userInput.value === "") {
