@@ -1,9 +1,10 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { nanoid } from "nanoid";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiPlus } from "@mdi/js";
 import Todos from "./components/Todos.vue";
+import Header from "./components/Header.vue";
 
 const todos = ref([]);
 const userInput = ref("");
@@ -46,11 +47,13 @@ function deleteTodo(id) {
   }
   todos.value = updatedTodos;
 }
+
+const completedTodos = ref(NaN);
 </script>
 
 <template>
   <div>
-    <!-- <Header /> -->
+    <Header :completed-todos="completedTodos" />
     <div class="flex flex-col items-center">
       <div class="w-4/6 my-5 flex justify-center">
         <div class="flex w-fit p-1 border-b border-slate-200 text-lg">
