@@ -8,15 +8,6 @@ import { mdiPencil } from "@mdi/js";
 
 const props = defineProps(["text", "completed", "id"]);
 
-/* const [todoEditor, setTodoEditor] = React.useState(false);
-function openTodoEditor(event) {
-  if (event.type === "click" || event.key === "Enter") {
-    !props.text
-      ? alert("Please enter your todo-item!")
-      : setTodoEditor(!todoEditor);
-  }
-} */
-
 const todoEditor = ref(false);
 function openTodoEditor() {
   console.log(todoEditor.value);

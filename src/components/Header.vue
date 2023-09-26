@@ -1,4 +1,5 @@
 <script setup>
+import CircleProgress from "vue3-circle-progress";
 const props = defineProps(["completedTodos"]);
 </script>
 <template>
@@ -9,23 +10,22 @@ const props = defineProps(["completedTodos"]);
       <div class="col-span-2">
         <h1 class="text-5xl font-normal">My ToDo-List</h1>
       </div>
-      <div className="flex self-end">
+      <div class="flex self-end">
         <p><!-- {todaysDate} --></p>
       </div>
-      <div className="flex justify-end">
-        <div className="w-14 h-14">
-          <!-- {isNaN(props.completedTodos) ? 
-            ( "" ) : 
-            ( <CircularProgressbar
-                value={props.completedTodos}
-                text={`${props.completedTodos}%`}
-                strokeWidth={10}
-                styles={buildStyles({
-                    textSize: "28px",
-                    textColor: "#fff",
-                    pathColor: "#60a5fa",
-                    trailColor: "#fff", })} />
-                    )} -->
+      <div class="flex justify-end">
+        <div class="w-14 h-14">
+          <circle-progress
+            v-show="!isNaN(completedTodos)"
+            :percent="completedTodos"
+            :viewport="true"
+            empty-color="#fff"
+            fill-color="#60a5fa"
+            :size="50"
+            :border-width="5"
+            :border-bg-width="4"
+            class=""
+          />
         </div>
       </div>
     </div>

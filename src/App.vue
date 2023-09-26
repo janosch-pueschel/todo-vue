@@ -48,7 +48,19 @@ function deleteTodo(id) {
   todos.value = updatedTodos;
 }
 
-const completedTodos = ref(NaN);
+let completedTodos = ref(NaN);
+watch(
+  todos,
+  () => {
+    let todosDone = 0;
+    todos.value.forEach((todo) => {
+      todo.completed ? (todosDone += 1) : (todosDone += 0);
+    });
+    const percent = Math.round((todosDone / todos.value.length) * 100);
+    completedTodos = percent;
+  },
+  { deep: true }
+);
 </script>
 
 <template>
