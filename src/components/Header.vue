@@ -1,6 +1,14 @@
 <script setup>
 import CircleProgress from "vue3-circle-progress";
 const props = defineProps(["completedTodos"]);
+
+const today = new Date();
+const day = today.toLocaleString("en-us", { weekday: "long" });
+const month = today.toLocaleString("default", { month: "short" });
+const date = today.getDate();
+const year = today.getFullYear();
+
+const todaysDate = `${day}, ${month} ${date} ${year}`;
 </script>
 <template>
   <div
@@ -11,7 +19,7 @@ const props = defineProps(["completedTodos"]);
         <h1 class="text-5xl font-normal">My ToDo-List</h1>
       </div>
       <div class="flex self-end">
-        <p><!-- {todaysDate} --></p>
+        <p>{{ todaysDate }}</p>
       </div>
       <div class="flex justify-end">
         <div class="w-14 h-14">
