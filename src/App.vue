@@ -22,8 +22,19 @@ function addTodo() {
   }
 }
 
+function markComplete(id) {
+  todos.value = todos.value.map((todo) => {
+    return todo.id === id ? { ...todo, completed: !todo.completed } : todo;
+  });
+}
+
+function updateTodo(event, id) {
+  todos.value = todos.value.map((todo) => {
+    return todo.id === id ? { ...todo, text: event.target.value } : todo;
+  });
+}
+
 function deleteTodo(id) {
-  console.log(todos.value);
   const updatedTodos = [];
   for (let i = 0; i < todos.value.length; i++) {
     const todo = todos.value[i];
@@ -34,7 +45,6 @@ function deleteTodo(id) {
     }
   }
   todos.value = updatedTodos;
-  console.log(todos.value);
 }
 </script>
 
@@ -62,7 +72,9 @@ function deleteTodo(id) {
         :text="todo.text"
         :completed="todo.completed"
         :id="todo.id"
+        @mark-complete="markComplete"
         @delete-todo="deleteTodo"
+        @update-todo="updateTodo"
       />
     </div>
   </div>
