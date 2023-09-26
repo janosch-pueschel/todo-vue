@@ -76,21 +76,26 @@ watch(
             v-model="userInput"
             @keydown.enter="addTodo"
           />
-          <svg-icon type="mdi" :path="mdiPlus" @click="addTodo"></svg-icon>
+          <svg-icon
+            type="mdi"
+            :path="mdiPlus"
+            @click="addTodo"
+            class="cursor-pointer"
+          ></svg-icon>
         </div>
       </div>
-    </div>
-    <div class="w-4/6 mt-10">
-      <Todos
-        v-for="todo in todos"
-        :key="todo.id"
-        :text="todo.text"
-        :completed="todo.completed"
-        :id="todo.id"
-        @mark-complete="markComplete"
-        @delete-todo="deleteTodo"
-        @update-todo="updateTodo"
-      />
+      <div class="w-4/6 mt-10">
+        <Todos
+          v-for="todo in todos"
+          :key="todo.id"
+          :text="todo.text"
+          :completed="todo.completed"
+          :id="todo.id"
+          @mark-complete="markComplete"
+          @delete-todo="deleteTodo"
+          @update-todo="updateTodo"
+        />
+      </div>
     </div>
   </div>
 </template>
