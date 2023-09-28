@@ -1,13 +1,13 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { nanoid } from "nanoid";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiPlus } from "@mdi/js";
 import Todos from "./components/Todos.vue";
 import Header from "./components/Header.vue";
 
-const init = localStorage.getItem("todos");
-const todos = ref(init ? JSON.parse(init) : []);
+const initTodos = localStorage.getItem("todos");
+const todos = ref(initTodos ? JSON.parse(initTodos) : []);
 const userInput = ref("");
 
 watch(
@@ -57,7 +57,11 @@ function deleteTodo(id) {
   todos.value = updatedTodos;
 }
 
-let completedTodos = ref(NaN);
+const initCompletedTodos = localStorage.getItem("completedTodos");
+const completedTodos = ref(
+  initCompletedTodos ? JSON.parse(initCompletedTodos) : NaN
+);
+
 watch(
   todos,
   () => {
@@ -66,7 +70,11 @@ watch(
       todo.completed ? (todosDone += 1) : (todosDone += 0);
     });
     const percent = Math.round((todosDone / todos.value.length) * 100);
-    completedTodos = percent;
+    completedTodos.value = percent;
+    localStorage.setItem(
+      "completedTodos",
+      JSON.stringify(completedTodos.value)
+    );
   },
   { deep: true }
 );
