@@ -17,7 +17,9 @@ function openTodoEditor() {
 </script>
 
 <template>
-  <div class="grid grid-cols-todos gap-1 mb-5 pb-5 border-b border-slate-200">
+  <div
+    class="grid grid-cols-todos gap-1 mb-5 pb-5 border-b last:border-0 border-slate-200"
+  >
     <div>
       <svg-icon
         v-if="completed"
@@ -39,7 +41,7 @@ function openTodoEditor() {
       <input
         v-if="todoEditor"
         type="text"
-        class="border appearance-none focus:outline-none italic border-none rounded bg-zinc-100 py-1 px-2"
+        class="w-full border appearance-none focus:outline-none italic border-none rounded bg-zinc-100 py-1 px-2"
         :value="text"
         @keydown.enter="openTodoEditor"
         @change="$emit('updateTodo', $event, id)"

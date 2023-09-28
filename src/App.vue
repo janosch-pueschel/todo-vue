@@ -84,10 +84,12 @@ watch(
   <div>
     <Header :completed-todos="completedTodos" />
     <div class="flex flex-col items-center">
-      <div class="w-4/6 my-5 flex justify-center">
-        <div class="flex w-fit p-1 border-b border-slate-200 text-lg">
+      <div class="w-11/12 sm:w-4/6 my-5 flex justify-center">
+        <div
+          class="flex w-11/12 sm:w-fit p-1 border-b border-slate-200 text-lg"
+        >
           <input
-            class="appearance-none focus:outline-none w-96 mr-5"
+            class="appearance-none focus:outline-none w-full sm:w-96 mr-5"
             type="text"
             placeholder="Add Todo"
             v-model="userInput"
@@ -97,11 +99,11 @@ watch(
             type="mdi"
             :path="mdiPlus"
             @click="addTodo"
-            class="cursor-pointer"
+            class="cursor-pointer w-fit"
           ></svg-icon>
         </div>
       </div>
-      <div class="w-4/6 mt-10">
+      <div class="w-11/12 sm:w-4/6 mt-10">
         <Todos
           v-for="todo in todos"
           :key="todo.id"

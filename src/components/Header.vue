@@ -21,7 +21,7 @@ const todaysDate = `${day}, ${month} ${date} ${year}`;
       <div class="flex self-end">
         <p>{{ todaysDate }}</p>
       </div>
-      <div class="flex justify-end">
+      <div class="flex justify-end items-end">
         <div class="w-14 h-14">
           <circle-progress
             v-show="!isNaN(completedTodos)"
