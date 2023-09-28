@@ -10,9 +10,7 @@ const props = defineProps(["text", "completed", "id"]);
 
 const todoEditor = ref(false);
 function openTodoEditor() {
-  console.log(todoEditor.value);
   todoEditor.value = !todoEditor.value;
-  console.log(todoEditor.value);
 }
 </script>
 
