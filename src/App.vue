@@ -1,10 +1,11 @@
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, computed } from "vue";
 import { nanoid } from "nanoid";
-import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiPlus } from "@mdi/js";
-import Todos from "./components/Todos.vue";
-import Header from "./components/Header.vue";
+import SvgIcon from "@jamescoyle/vue-icon";
+
+import TemplateHeader from "./components/TemplateHeader.vue";
+import ToDo from "./components/ToDo.vue";
 
 const initTodos = localStorage.getItem("todos");
 const todos = ref(initTodos ? JSON.parse(initTodos) : []);
@@ -27,69 +28,43 @@ function addTodo() {
       completed: false,
       id: nanoid(),
     };
-    todos.value.unshift(newTodoItem);
+    todos.value.unshift(newTodoItem); // better: use arr.push and sort in ToDo-component
     userInput.value = "";
   }
 }
 
-function markComplete(id) {
-  todos.value = todos.value.map((todo) => {
-    return todo.id === id ? { ...todo, completed: !todo.completed } : todo;
-  });
+function toggleComplete(id) {
+  todos.value = todos.value.map((todo) =>
+    todo.id === id ? { ...todo, completed: !todo.completed } : todo
+  );
 }
 
 function updateTodo(event, id) {
-  todos.value = todos.value.map((todo) => {
-    return todo.id === id ? { ...todo, text: event.target.value } : todo;
-  });
+  todos.value = todos.value.map((todo) =>
+    todo.id === id ? { ...todo, text: event.target.value } : todo
+  );
 }
 
 function deleteTodo(id) {
-  const updatedTodos = [];
-  for (let i = 0; i < todos.value.length; i++) {
-    const todo = todos.value[i];
-    if (todo.id === id) {
-      continue;
-    } else {
-      updatedTodos.push(todo);
-    }
-  }
-  todos.value = updatedTodos;
+  todos.value = todos.value.filter((todo) => todo.id !== id);
 }
 
-const initCompletedTodos = localStorage.getItem("completedTodos");
-const completedTodos = ref(
-  initCompletedTodos ? JSON.parse(initCompletedTodos) : NaN
-);
-
-watch(
-  todos,
-  () => {
-    let todosDone = 0;
-    todos.value.forEach((todo) => {
-      todo.completed ? (todosDone += 1) : (todosDone += 0);
-    });
-    const percent = Math.round((todosDone / todos.value.length) * 100);
-    completedTodos.value = percent;
-    localStorage.setItem(
-      "completedTodos",
-      JSON.stringify(completedTodos.value)
-    );
-  },
-  { deep: true }
-);
+const todoProgress = computed(() => {
+  const todosDone = todos.value.filter((todo) => todo.completed);
+  return (todosDone.length / todos.value.length) * 100;
+});
 </script>
 
 <template>
   <div>
-    <Header :completed-todos="completedTodos" />
+    <TemplateHeader :todo-progress="todoProgress" />
     <div class="flex flex-col items-center">
       <div class="w-11/12 sm:w-4/6 my-5 flex justify-center">
         <div
-          class="flex w-11/12 sm:w-fit p-1 border-b border-slate-200 text-lg"
+          class="flex w-11/12 sm:w-fit p-1 border-b border-slate-200 text-lg items-center"
         >
           <input
-            class="appearance-none focus:outline-none w-full sm:w-96 mr-5"
+            class="w-full sm:w-96 mr-5 appearance-none focus:outline-none focus:bg-slate-200 rounded px-2 py-1"
             type="text"
             placeholder="Add Todo"
             v-model="userInput"
@@ -99,18 +74,15 @@ watch(
             type="mdi"
             :path="mdiPlus"
             @click="addTodo"
-            class="cursor-pointer w-fit"
+            class="cursor-pointer w-fit hover:border hover:border-slate-200 rounded"
           ></svg-icon>
         </div>
       </div>
       <div class="w-11/12 sm:w-4/6 mt-10">
-        <Todos
+        <ToDo
           v-for="todo in todos"
-          :key="todo.id"
-          :text="todo.text"
-          :completed="todo.completed"
-          :id="todo.id"
-          @mark-complete="markComplete"
+          :todo="todo"
+          @toggle-complete="toggleComplete"
           @delete-todo="deleteTodo"
           @update-todo="updateTodo"
         />

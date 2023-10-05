@@ -1,12 +1,14 @@
 <script setup>
 import { ref } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
-import { mdiCheckCircleOutline } from "@mdi/js";
-import { mdiCheckCircle } from "@mdi/js";
-import { mdiDelete } from "@mdi/js";
-import { mdiPencil } from "@mdi/js";
+import {
+  mdiCheckCircleOutline,
+  mdiCheckCircle,
+  mdiDelete,
+  mdiPencil,
+} from "@mdi/js";
 
-const props = defineProps(["text", "completed", "id"]);
+defineProps(["todo"]);
 
 const todoEditor = ref(false);
 function openTodoEditor() {
@@ -19,20 +21,16 @@ function openTodoEditor() {
     class="grid grid-cols-todos gap-1 mb-5 pb-5 border-b last:border-0 border-slate-200"
   >
     <div>
+      <!-- better: render svg as button -->
       <svg-icon
-        v-if="completed"
         type="mdi"
-        :path="mdiCheckCircle"
-        color="#60a5fa"
+        :path="todo.completed ? mdiCheckCircle : mdiCheckCircleOutline"
         class="my-1 mx-2 cursor-pointer"
-        @click="$emit('markComplete', id)"
-      ></svg-icon>
-      <svg-icon
-        v-if="!completed && !todoEditor"
-        type="mdi"
-        :path="mdiCheckCircleOutline"
-        class="my-1 mx-2 cursor-pointer text-zinc-300 hover:text-blue-400"
-        @click="$emit('markComplete', id)"
+        :class="{
+          'text-zinc-300 hover:text-blue-400': !todo.completed && !todoEditor,
+          'text-blue-400': todo.completed,
+        }"
+        @click="$emit('toggleComplete', todo.id)"
       ></svg-icon>
     </div>
     <div>
@@ -42,19 +40,19 @@ function openTodoEditor() {
         class="w-full border appearance-none focus:outline-none italic border-none rounded bg-zinc-100 py-1 px-2"
         :value="text"
         @keydown.enter="openTodoEditor"
-        @change="$emit('updateTodo', $event, id)"
+        @change="$emit('updateTodo', $event, todo.id)"
       />
       <p
         v-if="!todoEditor"
         class="py-1 px-2"
-        :class="{ 'line-through': completed }"
+        :class="{ 'line-through': todo.completed }"
       >
-        {{ text }}
+        {{ todo.text }}
       </p>
     </div>
     <div>
       <svg-icon
-        v-show="!completed"
+        v-show="!todo.completed"
         type="mdi"
         :path="mdiPencil"
         class="my-1 mx-2 cursor-pointer hover:text-zinc-800"
@@ -66,7 +64,7 @@ function openTodoEditor() {
       type="mdi"
       :path="mdiDelete"
       class="my-1 mx-2 cursor-pointer text-zinc-300 hover:text-zinc-800"
-      @click="$emit('deleteTodo', id)"
+      @click="$emit('deleteTodo', todo.id)"
     ></svg-icon>
   </div>
 </template>

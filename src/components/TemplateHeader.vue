@@ -1,14 +1,15 @@
 <script setup>
 import CircleProgress from "vue3-circle-progress";
-const props = defineProps(["completedTodos"]);
+
+defineProps(["todoProgress"]);
 
 const today = new Date();
-const day = today.toLocaleString("en-us", { weekday: "long" });
-const month = today.toLocaleString("default", { month: "short" });
-const date = today.getDate();
-const year = today.getFullYear();
-
-const todaysDate = `${day}, ${month} ${date} ${year}`;
+const formattedDate = today.toLocaleString("en-US", {
+  weekday: "long",
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+});
 </script>
 <template>
   <div
@@ -19,20 +20,19 @@ const todaysDate = `${day}, ${month} ${date} ${year}`;
         <h1 class="text-5xl font-normal">My ToDo-List</h1>
       </div>
       <div class="flex self-end">
-        <p>{{ todaysDate }}</p>
+        <p>{{ formattedDate }}</p>
       </div>
       <div class="flex justify-end items-end">
         <div class="w-14 h-14">
           <circle-progress
-            v-show="!isNaN(completedTodos)"
-            :percent="completedTodos"
+            v-show="todoProgress > 0"
+            :percent="todoProgress"
             :viewport="true"
             empty-color="#fff"
             fill-color="#60a5fa"
             :size="50"
             :border-width="5"
             :border-bg-width="4"
-            class=""
           />
         </div>
       </div>
